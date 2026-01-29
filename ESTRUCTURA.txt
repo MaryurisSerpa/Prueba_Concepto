@@ -1,0 +1,311 @@
+🎉 ESTRUCTURA COMPLETA DEL PROYECTO - MALLA ACADÉMICA
+═════════════════════════════════════════════════════════
+
+📦 MALLA ACADÉMICA - PRUEBA DE CONCEPTO
+├─ Stack: Flask + FastAPI + Next.js
+├─ Objetivo: Diseño interactivo de malla académica
+└─ Estado: ✅ COMPLETADO Y FUNCIONAL
+
+═════════════════════════════════════════════════════════
+
+📂 ESTRUCTURA DEL ÁRBOL:
+═════════════════════════════════════════════════════════
+
+Prueba_Malla/
+│
+├─ 📄 INICIO.txt ⭐
+│  (Lee esto primero - Cómo comenzar en 3 pasos)
+│
+├─ 📄 README.md ⭐
+│  (Documentación principal completa)
+│
+├─ 📄 QUICKSTART.md
+│  (Inicio rápido en 5 minutos)
+│
+├─ 📄 ARCHITECTURE.md
+│  (Diagramas y flujos del sistema)
+│
+├─ 📄 TESTING.md
+│  (Guía de pruebas y validación)
+│
+├─ 📄 RESUMEN.txt
+│  (Resumen ejecutivo del proyecto)
+│
+├─ 📄 INDICE.txt
+│  (Índice de todos los archivos)
+│
+├─ 🐍 run_all.py
+│  (Script para ejecutar todo)
+│
+├─ 📂 .github/
+│  └─ 📄 copilot-instructions.md
+│     (Instrucciones para copilot)
+│
+├─ 📂 backend/ (FLASK - PUERTO 5000)
+│  │
+│  ├─ 📄 wsgi.py
+│  │  (Entry point - Ejecuta la app)
+│  │
+│  ├─ 📄 requirements.txt
+│  │  └─ Flask, Flask-CORS, requests
+│  │
+│  ├─ 📄 README.md
+│  │  (Doc del backend)
+│  │
+│  ├─ 📄 .gitignore
+│  │
+│  ├─ 📂 app/
+│  │  ├─ __init__.py
+│  │  └─ 📄 app.py (100 líneas)
+│  │     └─ Aplicación Flask + Blueprints
+│  │
+│  ├─ 📂 models/
+│  │  ├─ __init__.py
+│  │  ├─ 📄 modelos.py (70 líneas)
+│  │  │  └─ Curso, Malla, MallaCurso, CursoArrastrado
+│  │  └─ 📄 base_datos.py (150 líneas)
+│  │     └─ CURSOS_DB (10 cursos), MALLAS_DB, clase BaseDatos
+│  │
+│  └─ 📂 routes/
+│     ├─ __init__.py
+│     ├─ 📄 cursos.py (50 líneas)
+│     │  └─ GET /api/cursos, GET /api/cursos/{id}
+│     └─ 📄 malla.py (180 líneas)
+│        └─ GET/POST/PUT/DELETE /api/mallas/...
+│           + Integración con FastAPI
+│
+├─ 📂 microservicios/ (FASTAPI - PUERTO 8001)
+│  │
+│  └─ 📂 fastapi_analytics/
+│     │
+│     ├─ __init__.py
+│     │
+│     ├─ 📄 main.py (400 líneas)
+│     │  ├─ POST /analizar-prerequisitos
+│     │  ├─ GET /estadisticas-malla/{id}
+│     │  ├─ POST /validar-plan-estudios/{id}
+│     │  └─ Funciones de análisis y validación
+│     │
+│     └─ 📄 requirements.txt
+│        └─ FastAPI, uvicorn, pydantic
+│
+└─ 📂 frontend/ (NEXT.JS - PUERTO 3000)
+   │
+   ├─ 📄 package.json (40 líneas)
+   │  └─ Scripts: dev, build, start
+   │
+   ├─ 📄 tsconfig.json
+   │  (Configuración TypeScript)
+   │
+   ├─ 📄 next.config.js
+   │  (Configuración Next.js)
+   │
+   ├─ 📄 tailwind.config.js
+   │  (Configuración Tailwind CSS)
+   │
+   ├─ 📄 postcss.config.js
+   │  (Configuración PostCSS)
+   │
+   ├─ 📄 README.md
+   │  (Doc del frontend)
+   │
+   ├─ 📄 .gitignore
+   │
+   ├─ 📂 app/ (Next.js App Router)
+   │  ├─ 📄 layout.tsx (40 líneas)
+   │  │  └─ HTML Layout raíz
+   │  └─ 📄 page.tsx (120 líneas)
+   │     └─ Página principal
+   │        - Verificación de servicios
+   │        - MallaDesign component
+   │        - Estadísticas component
+   │
+   ├─ 📂 components/ (React Components)
+   │  ├─ 📄 MallaDesign.tsx (220 líneas)
+   │  │  └─ Canvas principal
+   │  │     - Drag & Drop
+   │  │     - Nivel 1 y Nivel 2
+   │  │     - Integración API
+   │  │
+   │  ├─ 📄 CursoItem.tsx (60 líneas)
+   │  │  └─ Tarjeta individual de curso
+   │  │
+   │  ├─ 📄 CursosDisponibles.tsx (90 líneas)
+   │  │  └─ Panel lateral con lista
+   │  │
+   │  └─ 📄 Estadisticas.tsx (100 líneas)
+   │     └─ Panel de análisis y recomendaciones
+   │
+   ├─ 📂 lib/ (Utilidades)
+   │  ├─ 📄 api.ts (50 líneas)
+   │  │  └─ Cliente HTTP (GET, POST, PUT, DELETE)
+   │  └─ 📄 types.ts (40 líneas)
+   │     └─ TypeScript types
+   │
+   └─ 📂 styles/ (CSS)
+      └─ 📄 globals.css (100 líneas)
+         └─ Estilos Tailwind + Custom
+
+═════════════════════════════════════════════════════════
+
+📊 ESTADÍSTICAS:
+═════════════════════════════════════════════════════════
+
+ARCHIVOS TOTALES: 30+
+LÍNEAS DE CÓDIGO: ~2000
+DOCUMENTACIÓN: ~1500 líneas
+
+DESGLOSE:
+├─ Backend (Python): ~750 líneas
+├─ Microservicio (Python): ~400 líneas
+├─ Frontend (TypeScript/React): ~800 líneas
+└─ Documentación (Markdown/Text): ~1500 líneas
+
+TECNOLOGÍAS:
+├─ Backend: Flask 3.0.0, requests
+├─ Microservicio: FastAPI 0.104.1, Pydantic
+├─ Frontend: Next.js 14, React 18, TypeScript
+├─ Styling: Tailwind CSS, PostCSS
+└─ Herramientas: uvicorn, axios, npm
+
+═════════════════════════════════════════════════════════
+
+🎯 ARCHIVOS PARA CADA TAREA:
+═════════════════════════════════════════════════════════
+
+¿Cómo empiezo?
+  → Lee: INICIO.txt ⭐
+
+¿Cómo ejecuto?
+  → Lee: QUICKSTART.md
+
+¿Cómo funciona?
+  → Lee: ARCHITECTURE.md
+
+¿Cómo lo pruebo?
+  → Lee: TESTING.md
+
+¿Qué se ha hecho?
+  → Lee: RESUMEN.txt
+
+¿Dónde está cada archivo?
+  → Lee: INDICE.txt
+
+═════════════════════════════════════════════════════════
+
+🚀 INICIO RÁPIDO:
+═════════════════════════════════════════════════════════
+
+1. Terminal 1: cd backend && python wsgi.py
+2. Terminal 2: cd microservicios/fastapi_analytics && \
+              python -m uvicorn main:app --reload --port 8001
+3. Terminal 3: cd frontend && npm install && npm run dev
+4. Abre: http://localhost:3000
+
+═════════════════════════════════════════════════════════
+
+✨ FUNCIONALIDADES:
+═════════════════════════════════════════════════════════
+
+NIVEL 1: Drag & Drop Simple
+  ✓ Interface interactiva
+  ✓ Posicionamiento libre
+  ✓ Eliminar cursos
+  ✓ Estadísticas en tiempo real
+
+NIVEL 2: Con Prerequisitos
+  ✓ Análisis automático
+  ✓ Agregación recursiva
+  ✓ Validación de plan
+  ✓ Recomendaciones IA
+
+═════════════════════════════════════════════════════════
+
+🔌 PUERTOS:
+═════════════════════════════════════════════════════════
+
+Flask Backend:   http://localhost:5000
+FastAPI:         http://localhost:8001
+Next.js:         http://localhost:3000
+Swagger Docs:    http://localhost:8001/docs
+
+═════════════════════════════════════════════════════════
+
+✅ CHECKLIST DE INSTALACIÓN:
+═════════════════════════════════════════════════════════
+
+Backend:
+  ✓ Python 3.8+ instalado
+  ✓ venv creado en backend/
+  ✓ requirements.txt instalado
+  ✓ Flask corriendo en puerto 5000
+
+Microservicio:
+  ✓ venv creado en microservicios/fastapi_analytics/
+  ✓ requirements.txt instalado
+  ✓ FastAPI corriendo en puerto 8001
+
+Frontend:
+  ✓ Node.js 18+ instalado
+  ✓ npm install ejecutado
+  ✓ Next.js corriendo en puerto 3000
+  ✓ Acceso a http://localhost:3000
+
+═════════════════════════════════════════════════════════
+
+🎓 ESTRUCTURA GENERAL:
+
+┌─────────────────────┐
+│   NEXT.JS (3000)    │
+│   Frontend Moderno   │
+└──────────┬──────────┘
+           │ HTTP
+           ↓
+┌─────────────────────┐
+│ FLASK (5000)        │
+│ API REST Principal  │
+└──────────┬──────────┘
+           │ HTTP
+           ↓
+┌─────────────────────┐
+│ FASTAPI (8001)      │
+│ Microservicio       │
+│ (Análisis & IA)     │
+└─────────────────────┘
+
+═════════════════════════════════════════════════════════
+
+📚 CURSOS DE PRUEBA (10):
+═════════════════════════════════════════════════════════
+
+Sin Requisitos:
+  • PROG101 - Intro Programación
+  • MATH101 - Cálculo I
+  • MATH102 - Álgebra Lineal
+
+Con Requisitos Simples:
+  • PROG102 - POO (→ PROG101)
+  • BD101 - BD I (→ PROG101)
+  • WEB101 - Web Frontend (→ PROG102)
+
+Con Requisitos Complejos:
+  • PROG104 - Algoritmos (→ PROG103)
+  • BD102 - BD II (→ BD101)
+  • WEB102 - Web Backend (→ WEB101 + BD101)
+
+═════════════════════════════════════════════════════════
+
+🎉 ESTADO FINAL:
+═════════════════════════════════════════════════════════
+
+✅ BACKEND:        COMPLETADO
+✅ MICROSERVICIO:  COMPLETADO
+✅ FRONTEND:       COMPLETADO
+✅ DOCUMENTACIÓN:  COMPLETADA
+✅ TESTING:        PREPARADO
+
+═════════════════════════════════════════════════════════
+
+Próximo paso: Abre INICIO.txt y comienza! 🚀
+
+═════════════════════════════════════════════════════════
