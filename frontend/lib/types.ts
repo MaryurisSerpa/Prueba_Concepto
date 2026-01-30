@@ -8,6 +8,7 @@ export interface Curso {
   descripcion?: string;
   prerequisitos: string[];
   dificultad: 'facil' | 'intermedio' | 'difícil';
+  horas?: number;  // Horas estipuladas del curso
 }
 
 export interface MallaCurso {

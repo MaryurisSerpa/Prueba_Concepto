@@ -35,7 +35,8 @@ CURSOS_DB = {
         "semestre": 1,
         "descripcion": "Conceptos básicos de programación",
         "prerequisitos": [],
-        "dificultad": "facil"
+        "dificultad": "facil",
+        "horas": 48
     },
     "PROG102": {
         "id": "PROG102",
@@ -45,7 +46,8 @@ CURSOS_DB = {
         "semestre": 2,
         "descripcion": "POO y patrones de diseño",
         "prerequisitos": ["PROG101"],
-        "dificultad": "intermedio"
+        "dificultad": "intermedio",
+        "horas": 64
     },
     "PROG103": {
         "id": "PROG103",
@@ -55,7 +57,8 @@ CURSOS_DB = {
         "semestre": 2,
         "descripcion": "Listas, árboles, grafos",
         "prerequisitos": ["PROG101"],
-        "dificultad": "intermedio"
+        "dificultad": "intermedio",
+        "horas": 64
     },
     "PROG104": {
         "id": "PROG104",
@@ -65,7 +68,8 @@ CURSOS_DB = {
         "semestre": 3,
         "descripcion": "Análisis y optimización de algoritmos",
         "prerequisitos": ["PROG103"],
-        "dificultad": "difícil"
+        "dificultad": "difícil",
+        "horas": 64
     },
     "BD101": {
         "id": "BD101",
@@ -75,7 +79,8 @@ CURSOS_DB = {
         "semestre": 2,
         "descripcion": "Diseño relacional de bases de datos",
         "prerequisitos": ["PROG101"],
-        "dificultad": "intermedio"
+        "dificultad": "intermedio",
+        "horas": 48
     },
     "BD102": {
         "id": "BD102",
@@ -85,7 +90,8 @@ CURSOS_DB = {
         "semestre": 3,
         "descripcion": "Optimización y transacciones",
         "prerequisitos": ["BD101"],
-        "dificultad": "intermedio"
+        "dificultad": "intermedio",
+        "horas": 48
     },
     "MATH101": {
         "id": "MATH101",
@@ -95,7 +101,8 @@ CURSOS_DB = {
         "semestre": 1,
         "descripcion": "Límites, derivadas e integrales",
         "prerequisitos": [],
-        "dificultad": "facil"
+        "dificultad": "facil",
+        "horas": 64
     },
     "MATH102": {
         "id": "MATH102",
@@ -105,7 +112,8 @@ CURSOS_DB = {
         "semestre": 1,
         "descripcion": "Matrices y espacios vectoriales",
         "prerequisitos": [],
-        "dificultad": "facil"
+        "dificultad": "facil",
+        "horas": 48
     },
     "WEB101": {
         "id": "WEB101",
@@ -115,7 +123,8 @@ CURSOS_DB = {
         "semestre": 3,
         "descripcion": "HTML, CSS, JavaScript",
         "prerequisitos": ["PROG102"],
-        "dificultad": "intermedio"
+        "dificultad": "intermedio",
+        "horas": 48
     },
     "WEB102": {
         "id": "WEB102",
@@ -125,7 +134,8 @@ CURSOS_DB = {
         "semestre": 4,
         "descripcion": "APIs REST y frameworks backend",
         "prerequisitos": ["WEB101", "BD101"],
-        "dificultad": "intermedio"
+        "dificultad": "intermedio",
+        "horas": 48
     },
 }
 
@@ -167,6 +177,69 @@ class EstadisticasResponse(BaseModel):
     carga_academica: str
 
 
+# ==================== FUNCIONES AUXILIARES ====================
+
+def obtener_prerequisitos_recursivos(curso_id: str, visitados: set = None) -> List[Dict]:
+    """
+    Obtiene todos los prerequisitos de un curso recursivamente (árbol completo)
+    Retorna lista de tuplas (curso_id, profundidad) donde profundidad indica el nivel en el árbol
+    """
+    if visitados is None:
+        visitados = set()
+    
+    if curso_id in visitados or curso_id not in CURSOS_DB:
+        return []
+    
+    visitados.add(curso_id)
+    curso = CURSOS_DB[curso_id]
+    prerequisitos_completos = []
+    
+    # Agregar prerequisitos directos (profundidad 1)
+    for prereq_id in curso.get("prerequisitos", []):
+        if prereq_id in CURSOS_DB:
+            prereq_curso = CURSOS_DB[prereq_id]
+            prerequisitos_completos.append({
+                "id": prereq_id,
+                "nombre": prereq_curso["nombre"],
+                "codigo": prereq_curso["codigo"],
+                "creditos": prereq_curso["creditos"],
+                "dificultad": prereq_curso["dificultad"],
+                "horas": prereq_curso.get("horas", 48),
+                "profundidad": 1
+            })
+            
+            # Obtener prerequisitos de este prerequisito recursivamente
+            sub_prerequisitos = obtener_prerequisitos_recursivos(prereq_id, visitados)
+            for sub_prereq in sub_prerequisitos:
+                # Incrementar profundidad
+                sub_prereq["profundidad"] += 1
+                # Evitar duplicados (mantener la mayor profundidad)
+                existe = False
+                for p in prerequisitos_completos:
+                    if p["id"] == sub_prereq["id"]:
+                        p["profundidad"] = max(p["profundidad"], sub_prereq["profundidad"])
+                        existe = True
+                        break
+                if not existe:
+                    prerequisitos_completos.append(sub_prereq)
+    
+    return prerequisitos_completos
+
+
+def calcular_nivel_minimo(curso_id: str) -> int:
+    """
+    Calcula el nivel mínimo en el que se puede colocar un curso
+    basado en la profundidad de su árbol de prerequisitos
+    """
+    prerequisitos = obtener_prerequisitos_recursivos(curso_id)
+    if not prerequisitos:
+        return 1  # Sin prerequisitos, puede ir en nivel 1
+    
+    # El nivel mínimo es la profundidad máxima + 1
+    max_profundidad = max(p["profundidad"] for p in prerequisitos)
+    return max_profundidad + 1
+
+
 # ==================== ENDPOINTS ====================
 
 @app.get("/")
@@ -174,16 +247,16 @@ async def root():
     """Endpoint raíz"""
     return {
         "mensaje": "Microservicio de Análisis - Malla Académica",
-        "version": "1.0.0",
-        "proposito": "Análisis de prerequisitos e integración con IA/Datos"
+        "version": "2.0.0",
+        "proposito": "Análisis recursivo de prerequisitos e integración con IA/Datos"
     }
 
 
 @app.post("/analizar-prerequisitos")
 async def analizar_prerequisitos(request: AnalizarPrerequisitosRequest):
     """
-    Analiza los prerequisitos de un curso
-    Determina qué prerequisites faltan en la malla actual
+    Analiza los prerequisitos de un curso RECURSIVAMENTE
+    Determina todos los prerequisitos (árbol completo) y valida niveles
     """
     if request.curso_id not in CURSOS_DB:
         raise HTTPException(status_code=404, detail="Curso no encontrado")
@@ -194,36 +267,39 @@ async def analizar_prerequisitos(request: AnalizarPrerequisitosRequest):
     curso = CURSOS_DB[request.curso_id]
     malla = MALLAS_DB[request.malla_id]
     
-    # Obtener cursos en la malla (ahora son diccionarios)
+    # Obtener cursos en la malla
     cursos_en_malla = {mc.get("curso_id") for mc in malla.get("cursos", [])}
     
-    # Analizar prerequisitos
-    prerequisitos = []
-    for prereq_id in curso.get("prerequisitos", []):
-        if prereq_id in CURSOS_DB:
-            prereq_curso = CURSOS_DB[prereq_id]
-            prerequisitos.append({
-                "id": prereq_id,
-                "nombre": prereq_curso["nombre"],
-                "codigo": prereq_curso["codigo"],
-                "creditos": prereq_curso["creditos"],
-                "dificultad": prereq_curso["dificultad"],
-                "presente_en_malla": prereq_id in cursos_en_malla
-            })
+    # Obtener prerequisitos recursivamente (árbol completo)
+    prerequisitos_arbol = obtener_prerequisitos_recursivos(request.curso_id)
+    
+    # Marcar cuáles están presentes en la malla
+    for prereq in prerequisitos_arbol:
+        prereq["presente_en_malla"] = prereq["id"] in cursos_en_malla
+    
+    # Calcular nivel mínimo permitido
+    nivel_minimo = calcular_nivel_minimo(request.curso_id)
+    
+    # Validar que el semestre solicitado sea válido
+    nivel_valido = request.semestre >= nivel_minimo
     
     # Análisis de complejidad
     analisis_complejidad = {
-        "nivel_prerequisitos": len(prerequisitos),
-        "prerequisitos_faltantes": sum(1 for p in prerequisitos if not p["presente_en_malla"]),
-        "creditos_requeridos": sum(p["creditos"] for p in prerequisitos),
-        "puede_agregarse": sum(1 for p in prerequisitos if not p["presente_en_malla"]) == 0
+        "nivel_prerequisitos": len(prerequisitos_arbol),
+        "prerequisitos_faltantes": sum(1 for p in prerequisitos_arbol if not p["presente_en_malla"]),
+        "creditos_requeridos": sum(p["creditos"] for p in prerequisitos_arbol),
+        "puede_agregarse": sum(1 for p in prerequisitos_arbol if not p["presente_en_malla"]) == 0,
+        "nivel_minimo_permitido": nivel_minimo,
+        "nivel_solicitado": request.semestre,
+        "nivel_valido": nivel_valido,
+        "profundidad_maxima": max([p["profundidad"] for p in prerequisitos_arbol]) if prerequisitos_arbol else 0
     }
     
     return {
         "curso_id": request.curso_id,
         "curso_nombre": curso["nombre"],
         "tiene_prerequisitos": len(curso.get("prerequisitos", [])) > 0,
-        "prerequisitos": prerequisitos,
+        "prerequisitos": prerequisitos_arbol,
         "analisis_complejidad": analisis_complejidad
     }
 

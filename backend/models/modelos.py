@@ -24,6 +24,7 @@ class Curso:
     descripcion: Optional[str] = None
     prerequisitos: List[str] = None
     dificultad: str = DifficultyLevel.FACIL
+    horas: int = 48  # Horas estipuladas por defecto
     
     def __post_init__(self):
         if self.prerequisitos is None:

@@ -27,11 +27,15 @@ export const apiClient = {
       body: JSON.stringify(data),
     });
     
+    const result = await response.json();
+    
     if (!response.ok) {
-      throw new Error(`API Error: ${response.statusText}`);
+      const error: any = new Error(result.error || `API Error: ${response.statusText}`);
+      error.data = result;
+      throw error;
     }
     
-    return response.json();
+    return result;
   },
 
   async put(endpoint: string, data: any) {
