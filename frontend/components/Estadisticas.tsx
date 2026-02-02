@@ -15,15 +15,12 @@ export default function Estadisticas({ mallaId }: EstadisticasProps) {
   useEffect(() => {
     const cargarStats = async () => {
       try {
-        const API_ANALYTICS = 'http://localhost:8001';
+        // Nota: Este componente ya no se usa en la arquitectura actual
+        // Los backends independientes no tienen endpoints de estadísticas separados
+        // Las estadísticas se calculan en el frontend directamente
         
-        const [statsRes, validacionRes] = await Promise.all([
-          fetch(`${API_ANALYTICS}/estadisticas-malla/${mallaId}`).then(r => r.json()),
-          fetch(`${API_ANALYTICS}/validar-plan-estudios/${mallaId}`).then(r => r.json())
-        ]);
-
-        setStats(statsRes);
-        setValidacion(validacionRes);
+        setStats(null);
+        setValidacion(null);
       } catch (err) {
         console.error('Error cargando estadísticas:', err);
       } finally {

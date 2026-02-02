@@ -1,49 +1,53 @@
-📑 ÍNDICE DE ARCHIVOS - MALLA ACADÉMICA PoC
+ ÍNDICE DE ARCHIVOS - MALLA ACADÉMICA PoC
 ═════════════════════════════════════════════════════════
 
 📍 ARCHIVOS RAÍZ:
 ═════════════════════════════════════════════════════════
 
-✅ INICIO.txt (⭐ LEE PRIMERO)
+✅ INICIO.txt ( LEE PRIMERO)
    → Cómo ejecutar en 3 pasos
    → Funcionalidades a probar
    → Troubleshooting
    → Próximos pasos
 
-✅ README.md (⭐ DOCUMENTACIÓN PRINCIPAL)
+✅ README.md ( DOCUMENTACIÓN PRINCIPAL)
    → Descripción completa del proyecto
    → Todas las características
    → Endpoints disponibles
    → Arquitectura general
    → Stack de tecnologías
 
-✅ QUICKSTART.md (⚡ RÁPIDO)
+✅ QUICKSTART.md ( RÁPIDO)
    → Inicio en 5 minutos
    → Opciones de ejecución
    → URLs útiles
    → Problemas comunes
 
-✅ ARCHITECTURE.md (🏗️)
-   → Diagramas del sistema
-   → Flujo de datos (Nivel 1 y 2)
-   → Estructura de módulos
-   → Patrones de comunicación
-   → Comparación de stacks
+✅ ARQUITECTURA_INDEPENDIENTE.md ( NUEVA ARQUITECTURA)
+   → Diagramas del sistema actualizado
+   → Explicación de backends independientes
+   → Comparación Flask vs FastAPI
+   → Sin microservicios
+   → Selector de backend
 
-✅ TESTING.md (🧪)
+✅ ARCHITECTURE.md ( OBSOLETO - VER ARQUITECTURA_INDEPENDIENTE.md)
+   → Documentación de arquitectura antigua
+   → Contiene referencias al microservicio
+
+✅ TESTING.md ()
    → Verificación de servicios
    → Pruebas de endpoints
    → Casos de uso
    → Testing manual en navegador
    → Checklist de validación
 
-✅ RESUMEN.txt (📋)
+✅ RESUMEN.txt ()
    → Resumen ejecutivo
    → Funcionalidades implementadas
    → Estadísticas del proyecto
    → Conclusiones
 
-✅ run_all.py (🚀)
+✅ run_all.py ()
    → Script para ejecutar todo
    → Manejo de threads
    → Gestión de procesos
@@ -103,40 +107,42 @@
 │     - GET /api/cursos
 │     - GET /api/cursos/{id}
 │
-└─ ✅ malla.py (180 líneas)
+└─ ✅ malla.py (264 líneas)
    └ Blueprint 'malla':
       - GET /api/mallas/{id}
       - POST /api/mallas/{id}/cursos
       - POST /api/mallas/{id}/cursos-con-prerequisitos
       - PUT /api/mallas/{id}/cursos/{id}
       - DELETE /api/mallas/{id}/cursos/{id}
-      - Integración con FastAPI
+      - PUT /api/mallas/{id}
+      - Lógica de prerequisitos integrada (SIN dependencias externas)
 
 ═════════════════════════════════════════════════════════
 
-📂 MICROSERVICIOS/ (Directorio)
+📂 BACKEND_FASTAPI/ (FastAPI Independiente - Puerto 8002)
 ═════════════════════════════════════════════════════════
 
-📂 fastapi_analytics/ (FastAPI - Puerto 8001)
-
-✅ main.py (400 líneas)
-   → Microservicio FastAPI principal
+✅ main.py (450 líneas)
+   → Backend FastAPI completo e independiente
    → CORS habilitado
-   → Endpoints:
+   → Endpoints CRUD completos:
       - GET / (info)
-      - POST /analizar-prerequisitos
-      - GET /estadisticas-malla/{id}
-      - POST /validar-plan-estudios/{id}
-   → Funciones de validación y análisis
+      - GET /api/cursos
+      - GET /api/cursos/{id}
+      - GET /api/mallas/{id}
+      - POST /api/mallas/{id}/cursos
+      - POST /api/mallas/{id}/cursos-con-prerequisitos
+      - PUT /api/mallas/{id}/cursos/{curso_id}
+      - DELETE /api/mallas/{id}/cursos/{curso_id}
+      - PUT /api/mallas/{id}
+   → Lógica de prerequisitos integrada
+   → Modelos Pydantic
 
-✅ requirements.txt (6 líneas)
-   → fastapi==0.104.1
-   → uvicorn==0.24.0
-   → pydantic==2.5.0
-   → python-multipart==0.0.6
-   → requests==2.31.0
-
-✅ __init__.py (vacío)
+✅ requirements.txt (4 líneas)
+   → fastapi
+   → uvicorn
+   → pydantic
+   → python-multipart
 
 ═════════════════════════════════════════════════════════
 

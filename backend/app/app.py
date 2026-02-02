@@ -16,7 +16,13 @@ app.register_blueprint(malla_bp)
 
 @app.route('/')
 def index():
-    """Endpoint raíz"""
+    """
+    Endpoint raíz del API - Información del servicio.
+    Muestra mensaje de bienvenida y lista de endpoints disponibles.
+    Útil para verificar que el servidor está activo.
+    Endpoint: GET /
+    
+    """
     return jsonify({
         'mensaje': 'Bienvenido a Malla Académica Backend (Flask)',
         'version': '1.0.0',
@@ -30,7 +36,13 @@ def index():
 
 @app.route('/health')
 def health():
-    """Health check para verificar que el servidor está activo"""
+    """
+    Health check - Verifica que el servidor Flask está funcionando.
+    
+    Usado por monitoring, balanceadores de carga o para debugging.
+    Responde rápidamente sin realizar operaciones costosas.
+    Endpoint: GET /health
+    """
     return jsonify({
         'status': 'healthy',
         'service': 'malla-academica-backend'

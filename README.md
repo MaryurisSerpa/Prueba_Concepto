@@ -1,39 +1,47 @@
 # Malla Académica - Prueba de Concepto
 
-Sistema interactivo de diseño de malla académica con Python (Flask + FastAPI) y Next.js. Una comparación práctica entre diferentes stacks de desarrollo.
+Sistema interactivo de diseño de malla académica con **backends independientes** en Flask y FastAPI, compartiendo el mismo frontend Next.js para comparación directa de tecnologías.
 
 ## 🎯 Objetivos de la Prueba de Concepto
 
-### Stack Evaluado: Flask + FastAPI + Next.js
+### Comparación: Flask vs FastAPI
 
-Esta PoC compara la viabilidad de:
+Esta PoC implementa **DOS backends completamente independientes** con las mismas rutas:
 
-1. **Backend Principal**: Flask (REST API tradicional)
-2. **Microservicios**: FastAPI (análisis de datos e IA)
-3. **Frontend**: Next.js (interfaz moderna y reactiva)
+1. **Backend Flask** (Puerto 5000): Python tradicional, síncrono
+2. **Backend FastAPI** (Puerto 8002): Python moderno, asíncrono  
+3. **Frontend Next.js** (Puerto 3000): Selector para cambiar entre backends
 
 ### Por qué esta arquitectura
 
-- ✅ **Mismo lenguaje (Python)** para Flask y FastAPI permite reutilizar modelos
-- ✅ **Separación de responsabilidades** claras entre API y microservicios
-- ✅ **Escalabilidad** mediante arquitectura de microservicios
-- ✅ **Comparación válida** con stacks JavaScript (Nest.js + FastAPI)
+- ✅ **Comparación real** de dos tecnologías Python populares
+- ✅ **Backends autónomos** sin dependencias entre ellos
+- ✅ **Mismo frontend** permite evaluación objetiva
+- ✅ **Cambio dinámico** entre backends sin recargar página
+- ✅ **Lógica completa** en cada backend (prerequisitos integrados)
 
-## 📋 Características
+## ✨ Características
 
-### Nivel 1: Drag & Drop Simple
-- ✨ Interfaz interactiva para arrastrar cursos
-- 📍 Posicionamiento libre en el canvas
-- 🗑️ Eliminar cursos agregados
-- 📊 Vista en tiempo real de estadísticas
+### Drag & Drop con Validación
+- 👋 Interfaz interactiva para arrastrar cursos
+- 📊 Cálculo automático de créditos y horas por nivel
+- ❌ Validación de duplicidad de cursos
+- 🗑️ Eliminar cursos de la malla
+- 🔄 Mover cursos entre niveles con validación
 
-### Nivel 2: Detección de Prerequisitos
-- 🔗 Análisis automático de prerequisitos via FastAPI
-- 🚀 Agregación automática de cursos prerequisitos
-- 📈 Validación de plan de estudios
-- 💡 Recomendaciones basadas en análisis
+### Análisis de Prerequisitos (Integrado en cada backend)
+- 🌳 Análisis recursivo de prerequisitos (árbol completo)
+- ➕ Agregación automática de cursos prerequisitos faltantes
+- 📏 Auto-ajuste de niveles según profundidad de prerequisitos
+- 🚫 Validación al mover cursos (no pueden ir antes de sus prerequisitos)
 
-## 🏗️ Arquitectura del Proyecto
+### Configuración
+- ✏️ Nombre de malla editable (auto-guardado)
+- 🎚️ Créditos del programa (36/48/60/72)
+- 📊 Número de niveles (4/6/8/10)
+- 📅 Periodo de vigencia
+
+## 🏛️ Arquitectura del Proyecto
 
 ```
 Prueba_Malla/
@@ -42,32 +50,31 @@ Prueba_Malla/
 │   │   └── app.py             # Aplicación Flask principal
 │   ├── models/
 │   │   ├── modelos.py         # Dataclasses
-│   │   └── base_datos.py      # Datos simulados y operaciones
+│   │   └── base_datos.py      # Datos simulados
 │   ├── routes/
 │   │   ├── cursos.py          # Endpoints de cursos
-│   │   └── malla.py           # Endpoints de malla
+│   │   └── malla.py           # Endpoints malla + prerequisitos
 │   ├── requirements.txt
-│   └── wsgi.py               # Entry point
+│   └── wsgi.py                # Entry point
 │
-├── microservicios/
-│   └── fastapi_analytics/     # FastAPI Microservicio (Puerto 8001)
-│       ├── main.py            # Análisis de prerequisitos e IA
-│       └── requirements.txt
+├── backend_fastapi/            # FastAPI Backend (Puerto 8002)
+│   ├── main.py                # Backend completo con prerequisitos
+│   └── requirements.txt
 │
 ├── frontend/                   # Next.js Frontend (Puerto 3000)
 │   ├── app/
 │   │   ├── layout.tsx         # Layout raíz
-│   │   └── page.tsx           # Página principal
+│   │   └── page.tsx           # Página principal con selector
 │   ├── components/
 │   │   ├── MallaDesign.tsx    # Componente principal
 │   │   ├── CursoItem.tsx      # Tarjeta de curso
 │   │   ├── CursosDisponibles.tsx
 │   │   └── Estadisticas.tsx
 │   ├── lib/
-│   │   ├── api.ts             # Cliente HTTP
+│   │   ├── api.ts             # Cliente HTTP dinámico
 │   │   └── types.ts           # TypeScript types
 │   └── styles/
-│       └── globals.css        # Estilos globales
+│       └── globals.css        # Estilos globales (paleta gris-azul)
 │
 └── .github/
     └── copilot-instructions.md
@@ -96,17 +103,19 @@ python wsgi.py
 
 **Endpoints disponibles:**
 - `GET /` - Información del servicio
+- `GET /health` - Health check
 - `GET /api/cursos` - Lista de cursos
 - `GET /api/cursos/{id}` - Detalles de curso
 - `GET /api/mallas/{id}` - Obtener malla
-- `POST /api/mallas/{id}/cursos` - Agregar curso (Nivel 1)
-- `POST /api/mallas/{id}/cursos-con-prerequisitos` - Agregar con requisitos (Nivel 2)
+- `PUT /api/mallas/{id}` - Actualizar malla (nombre, créditos, etc)
+- `POST /api/mallas/{id}/cursos-con-prerequisitos` - Agregar con análisis recursivo
+- `PUT /api/mallas/{id}/cursos/{curso_id}` - Actualizar posición
 - `DELETE /api/mallas/{id}/cursos/{curso_id}` - Eliminar curso
 
-### 2️⃣ Microservicio FastAPI (Puerto 8001)
+### 2️⃣ Backend FastAPI (Puerto 8002)
 
 ```bash
-cd microservicios/fastapi_analytics
+cd backend_fastapi
 python -m venv venv
 # Windows:
 venv\Scripts\activate
@@ -114,16 +123,21 @@ venv\Scripts\activate
 source venv/bin/activate
 
 pip install -r requirements.txt
-python -m uvicorn main:app --reload --port 8001
+python -m uvicorn main:app --reload --port 8002
 ```
 
-**Endpoints disponibles:**
+**Endpoints disponibles:** (Mismas rutas que Flask)
 - `GET /` - Información del servicio
-- `POST /analizar-prerequisitos` - Análisis detallado (usado por Flask)
-- `GET /estadisticas-malla/{malla_id}` - Estadísticas de carga
-- `POST /validar-plan-estudios/{malla_id}` - Validaciones y recomendaciones
+- `GET /health` - Health check
+- `GET /api/cursos` - Lista de cursos
+- `GET /api/cursos/{id}` - Detalles de curso
+- `GET /api/mallas/{id}` - Obtener malla
+- `PUT /api/mallas/{id}` - Actualizar malla
+- `POST /api/mallas/{id}/cursos-con-prerequisitos` - Agregar con análisis recursivo
+- `PUT /api/mallas/{id}/cursos/{curso_id}` - Actualizar posición
+- `DELETE /api/mallas/{id}/cursos/{curso_id}` - Eliminar curso
 
-Documentación interactiva: `http://localhost:8001/docs`
+Documentación interactiva: `http://localhost:8002/docs`
 
 ### 3️⃣ Frontend Next.js (Puerto 3000)
 
@@ -135,18 +149,23 @@ npm run dev
 
 Accede en: `http://localhost:3000`
 
+**Selector de Backend:** En el header encontrarás botones para cambiar entre Flask y FastAPI.
+
 ## 📊 Flujo de Datos
 
-### Nivel 1: Drag & Drop Simple
+### Con Análisis de Prerequisitos
 ```
 Frontend (Next.js)
-    ↓ User drags course
-    ↓ POST /api/mallas/{id}/cursos
-Backend (Flask)
-    ↓ Validates and stores
+    ↓ User drags course with prerequisites
+    ↓ POST /api/mallas/{id}/cursos-con-prerequisitos
+Backend (Flask o FastAPI) - Seleccionado por el usuario
+    ↓ Analiza prerequisitos recursivamente
+    ↓ Calcula nivel mínimo
+    ↓ Agrega prerequisitos faltantes
+    ↓ Valida y ajusta niveles
     ↓ Returns updated malla
 Frontend (Next.js)
-    ↓ Renders course in canvas
+    ↓ Renders all courses in correct levels
 ```
 
 ### Nivel 2: Con Análisis de Prerequisitos

@@ -1,12 +1,12 @@
 # 🚀 Quick Start - Malla Académica
 
-## Inicio en 5 minutos
+## Inicio en 5 minutos - Backends Independientes
 
 ### 1. Abre 3 terminales (PowerShell en Windows)
 
 ---
 
-## 📍 Terminal 1: Flask Backend
+## 📍 Terminal 1: Flask Backend (Puerto 5000)
 
 ```powershell
 cd backend
@@ -23,19 +23,19 @@ Running on http://0.0.0.0:5000
 
 ---
 
-## 📍 Terminal 2: FastAPI Microservicio
+## 📍 Terminal 2: FastAPI Backend (Puerto 8002)
 
 ```powershell
-cd microservicios/fastapi_analytics
+cd backend_fastapi
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
-python -m uvicorn main:app --reload --port 8001
+python -m uvicorn main:app --reload --port 8002
 ```
 
 **✅ Listo cuando veas:**
 ```
-Uvicorn running on http://0.0.0.0:8001
+Uvicorn running on http://0.0.0.0:8002
 ```
 
 ---
@@ -62,21 +62,41 @@ Accede a: **http://localhost:3000**
 
 ---
 
+## 🔄 Cambiar entre Backends
+
+En el **header del frontend** encontrarás:
+
+```
+Backend: [Flask] [FastAPI]
+```
+
+- **Click en Flask** → Usa el backend Flask (puerto 5000)
+- **Click en FastAPI** → Usa el backend FastAPI (puerto 8002)
+
+¡El cambio es instantáneo sin recargar la página!
+
+---
+
 ## 🎮 Prueba las Funcionalidades
 
-### Nivel 1: Drag & Drop
-1. Click en "Nivel 1: Drag & Drop"
-2. Arrastra un curso desde el panel
-3. Suelta en el área blanca
-4. ¡Curso agregado! ✅
+### Drag & Drop con Validación
+1. Haz click en "+ Agregar cursos" 
+2. Selecciona cursos del catálogo
+3. Arrastra desde el carrito a un nivel
+4. El sistema:
+   - Agrega prerequisitos automáticamente
+   - Valida duplicidad
+   - Ajusta niveles si es necesario
+   - Calcula créditos y horas
 
-### Nivel 2: Con Prerequisitos
-1. Click en "Nivel 2: Con Prerequisitos"
-2. Arrastra un curso con ⚠️ (tiene requisitos)
-3. El sistema automáticamente:
-   - Agrega los prerequisitos
-   - Calcula estadísticas
-   - Muestra recomendaciones
+### Mover Cursos entre Niveles
+1. Arrastra un curso ya agregado
+2. Suéltalo en otro nivel
+3. El sistema valida que no vaya antes de sus prerequisitos
+
+### Auto-guardado
+- Escribe un nuevo nombre de malla
+- Se guarda automáticamente después de 1 segundo
 
 ---
 
@@ -85,8 +105,9 @@ Accede a: **http://localhost:3000**
 | Servicio | URL |
 |----------|-----|
 | **Frontend** | http://localhost:3000 |
-| **Flask API** | http://localhost:5000 |
-| **FastAPI Docs** | http://localhost:8001/docs |
+| **Flask Backend** | http://localhost:5000 |
+| **FastAPI Backend** | http://localhost:8002 |
+| **FastAPI Docs** | http://localhost:8002/docs |
 | **Flask Health** | http://localhost:5000/health |
 
 ---

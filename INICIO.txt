@@ -33,15 +33,15 @@ python wsgi.py
 
 ✅ Deberías ver: "Running on http://0.0.0.0:5000"
 
-PASO 3: En Terminal 2 (FastAPI):
+PASO 3: En Terminal 2 (FastAPI Backend Independiente):
 ────────────────────────────────────────────────────────
-cd microservicios/fastapi_analytics
+cd backend_fastapi
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
-python -m uvicorn main:app --reload --port 8001
+python -m uvicorn main:app --reload --port 8002
 
-✅ Deberías ver: "Uvicorn running on http://0.0.0.0:8001"
+✅ Deberías ver: "Uvicorn running on http://0.0.0.0:8002"
 
 PASO 4: En Terminal 3 (Next.js):
 ────────────────────────────────────────────────────────
@@ -54,6 +54,15 @@ npm run dev
 PASO 5: Abre en navegador:
 ────────────────────────────────────────────────────────
 http://localhost:3000
+
+🔄 SELECTOR DE BACKEND:
+────────────────────────────────────────────────────────
+En el header verás botones para cambiar entre:
+• Flask (Puerto 5000) - Backend tradicional
+• FastAPI (Puerto 8002) - Backend moderno
+
+Ambos tienen las mismas funcionalidades!
+Cambia entre ellos para comparar.
 
 ═════════════════════════════════════════════════════════
 

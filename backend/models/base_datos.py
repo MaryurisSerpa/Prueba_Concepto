@@ -122,7 +122,7 @@ CURSOS_DB = {
 MALLAS_DB = {
     "MALLA001": Malla(
         id="MALLA001",
-        nombre="Ingeniería de Sistemas",
+        nombre="",  # Sin nombre predeterminado, el usuario debe ingresarlo
         programa="Ingeniería de Sistemas",
         cursos=[],
         descripcion="Plan de estudios para Ingeniería de Sistemas"

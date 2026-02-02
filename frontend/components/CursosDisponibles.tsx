@@ -47,7 +47,7 @@ export default function CursosDisponibles({
             </div>
             {curso.prerequisitos.length > 0 && (
               <div className="text-xs text-orange-600 mt-1">
-                ⚠️ {curso.prerequisitos.length} prerequisito(s)
+                 {curso.prerequisitos.length} prerequisito(s)
               </div>
             )}
             <div className="text-xs text-gray-500 mt-2">{curso.descripcion}</div>

@@ -9,19 +9,21 @@ Stack: Flask + FastAPI + Next.js
 🏗️  ARQUITECTURA IMPLEMENTADA
 ═════════════════════════════════════════════════════════
 
-1. BACKEND - Flask (Puerto 5000)
+1. BACKEND FLASK - Independiente (Puerto 5000)
    ├─ app/app.py                 → Aplicación Flask principal
    ├─ models/modelos.py          → Dataclasses (Curso, Malla, MallaCurso)
    ├─ models/base_datos.py       → Base de datos simulada
    ├─ routes/cursos.py           → Endpoints GET /api/cursos
    ├─ routes/malla.py            → Endpoints CRUD /api/mallas
+   │                             → Lógica de prerequisitos integrada
    └─ wsgi.py                    → Entry point
 
-2. MICROSERVICIO - FastAPI (Puerto 8001)
-   └─ main.py                    → Microservicio de análisis
-      ├─ POST /analizar-prerequisitos
-      ├─ GET /estadisticas-malla/{id}
-      └─ POST /validar-plan-estudios/{id}
+2. BACKEND FASTAPI - Independiente (Puerto 8002)
+   └─ main.py                    → Backend completo FastAPI
+      ├─ Todos los endpoints CRUD
+      ├─ Lógica de prerequisitos integrada
+      ├─ Mismo comportamiento que Flask
+      └─ Para comparación directa
 
 3. FRONTEND - Next.js (Puerto 3000)
    ├─ app/page.tsx               → Página principal con verificación
@@ -45,13 +47,14 @@ NIVEL 1: Drag & Drop Simple
 ✅ Panel de control
 
 NIVEL 2: Detección Automática de Prerequisitos
-✅ Análisis automático via FastAPI microservicio
+✅ Análisis automático integrado en ambos backends
 ✅ Agregación automática de cursos prerequisitos
 ✅ Recursividad para prerequisitos complejos
-✅ Posicionamiento automático
+✅ Posicionamiento automático por niveles
 ✅ Validación de plan de estudios
 ✅ Recomendaciones basadas en análisis
 ✅ Cálculo de carga académica
+✅ Selector de backend en header (Flask vs FastAPI)
 
 CARACTERÍSTICAS ADICIONALES
 ✅ CORS habilitado para comunicación entre servicios
@@ -231,7 +234,7 @@ OPCIÓN 2: Script unificado:
    → Estadísticas se actualizan automáticamente
 
 2. NIVEL 2 - Con Análisis:
-   → Arrastra "Desarrollo Web Backend" (tiene ⚠️)
+   → Arrastra "Desarrollo Web Backend" (tiene )
    → Sistema automáticamente:
      - Agrega "Desarrollo Web Frontend" (prerequisito)
      - Agrega "Bases de Datos I" (prerequisito)
